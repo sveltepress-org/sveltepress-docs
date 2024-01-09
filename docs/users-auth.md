@@ -61,7 +61,7 @@ export const actions = {
       throw error(500);
     }
 
-    pb.authStore.save(cookies);
+    pb.authStore.saveCookie(cookies);
 
     throw redirect("/dashboard");
   },
@@ -76,7 +76,7 @@ export const actions = {
 export const load = async ({ locals, cookies }) => {
   const { pb } = locals;
 
-  pb.authStore.clear(cookies);
+  pb.authStore.clearCookie(cookies);
 
   throw redirect("/");
 };
