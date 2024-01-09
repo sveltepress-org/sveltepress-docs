@@ -24,7 +24,7 @@ the free tier when possible.
 
 ### 3. Transparency on profitability
 
-We're taking a unique approach to build-in-the-open and transparency. We're making the internal dashboard public with a graph of free and paid instances, the costs, the profit margin and the timeline to
+We're taking a unique approach to [#buildinpublic](https://twitter.com/hashtag/buildinpublic) and transparency. We're making the internal dashboard public with a graph of free and paid instances, the costs, the profit margin and the timeline to
 reach profitability. The goal is to build trust in a platform that will run sustainably in to the future.
 
 ### 4. Open source
