@@ -46,7 +46,7 @@ export const load = async (event) => {
 ## Admin Bar
 
 Once signed in, an Admin Bar will appear on top of pages for editing, if enabled.
-The Admin Bar is a Svelte component itself. To enable the Admin Bar, it should be added to the root layout:
+The Admin Bar is a Svelte component itself. To enable the Admin Bar, add it to the root layout:
 
 `routes/+layout.svelte`
 
