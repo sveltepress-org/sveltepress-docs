@@ -71,7 +71,7 @@ has default permissions for public List/Search and View.
 
 Content in SveltePress is keyed by the page route, the route params, page version (see [below](#page-versioning)) and optionally by language code (see [i18n support](/docs/i18n)). For example, a blog post would be stored and retrieved from:
 
-`/blog/[post-id] : post-id=1 : v1 : (en-US)`
+`/blog/[post-id] : post-id=1 : en-US : v1`
 
 On page render, the content replaces each editable section of the page. It's also
 available in the page's data prop under the `contents` key, if you need to access it in the `script` context:
