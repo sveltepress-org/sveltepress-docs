@@ -9,7 +9,7 @@ such as title, author, published date, etc. These can then be accessed in Svelte
 
 In the univeral loader, define editable metadata with the `Metadata` constructor:
 
-`blog/[slug]/+page.ts`
+`routes/blog/[slug]/+page.ts`
 
 ```ts
 import { Metadata } from "sveltepress"
@@ -18,6 +18,9 @@ import type { RouteId } from './$types';
 const metadata = new Metadata('/blog/[slug]' satisfies RouteId, {
   title: "Default title",
   tagline: "Default tagline",
+  tags: ["Data"],
+  categories: ["Application"],
+  author: "John Doe",
   published_at: new Date()
 });
 
@@ -28,7 +31,7 @@ export const load: async (event) => {
 }
 ```
 
-`blog/[slug]/+page.svelte`
+`routes/blog/[slug]/+page.svelte`
 
 ```svelte
 <script lang="ts">
@@ -44,3 +47,30 @@ In admin mode, this provides a dropdown in the [Admin Bar](/admin-dashboard#admi
 
 The metadata properties are coalesced the same way SvelteKit does with loader data from higher level
 layouts. Properties defined in higher level layouts are available in lower levels or can be overwritten.
+
+## Taxonomy
+
+A few metadata keys are preconfigured to be parsed as taxonomy: `categories`, `tags` and `author`.
+The taxonomy can be loaded in the root layout and made available to any page below it:
+
+`routes/+layout.ts`
+
+```ts
+import { SveltePress } from "sveltepress";
+
+export const load = async (event) => {
+  const pb = new SveltePress();
+
+  const { contents, metadata } = await pb.contents.load(event);
+
+  return {
+    pb,
+    contents,
+    metadata,
+    taxonomies: await pb.contents.taxonomies("/blog/[slug]"),
+  };
+};
+```
+
+The `taxonomies` key will be populated with the unique values of `categories`, `tags`, and `author`
+for the route. These can be used to set up pages like `/categories` for displaying lists of content.

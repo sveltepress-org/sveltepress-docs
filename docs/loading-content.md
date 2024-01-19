@@ -2,14 +2,14 @@
 sidebar_position: 3
 ---
 
-# Managing Content
+# Loading Content
 
-SveltePress comes with content management tools out of the box. Pages in SvelteKit
-load content from SveltePress in the `load` context of their lifecycle.
+SveltePress comes with content management tools out of the box. Routes in SvelteKit
+load content from SveltePress in the universal (server or client) load function.
 
 ## PlainText, RichText, Markdown
 
-SveltePress comes with three text editors components: `PlainText`, `RichText` and `Markdown`.
+SveltePress comes with three editor components: `PlainText`, `RichText` and `Markdown`.
 Choose between them depending on the usecase in the page. For example, a page title might be better
 as `PlainText`, while paragraphs of prose might be better as `RichText` or `Markdown`.
 
@@ -65,13 +65,30 @@ the editor interface can be used. Read more on [how to build custom editors](/do
 
 ## Loading Content
 
-Page content (plain text, rich text and component props) is loaded automatically by
-SveltePress for each page. In SvelteKit terms, it's added as a page load dependency in the universal context (loads happen on the server or the client). For that reason, the content API
-has default permissions for public List/Search and View.
+Page content (plain text, rich text and component props) is loaded by
+SveltePress for each page during navigation. In SvelteKit terms, it's added as a page load dependency in the universal context (load happens on the server or the client).
+
+`routes/+layout.ts`
+
+```ts
+import { SveltePress } from "sveltepress";
+
+export const load = async (event) => {
+  const pb = new SveltePress();
+
+  const { contents, metadata } = await pb.contents.load(event);
+
+  return {
+    pb,
+    contents,
+    metadata,
+  };
+};
+```
 
 Content in SveltePress is keyed by the page route, the route params, page version (see [below](#page-versioning)) and optionally by language code (see [i18n support](/docs/i18n)). For example, a blog post would be stored and retrieved from:
 
-`/blog/[post-id] : post-id=1 : en-US : v1`
+`/blog/[post-id] : post-id=1 : v1`
 
 On page render, the content replaces each editable section of the page. It's also
 available in the page's data prop under the `contents` key, if you need to access it in the `script` context:
@@ -86,13 +103,33 @@ available in the page's data prop under the `contents` key, if you need to acces
 </script>
 ```
 
-SveltePress will throw a 404 for pages with route params if they contain editable sections but have no content stored (except in Admin Mode for creating new pages, see [below](#creating-new-pages)).
+## 404 Errors
+
+SveltePress can be configured to throw a `404` error for pages with route params if there's no content saved in the database (except in Admin Mode for creating new pages, see [below](#creating-new-pages)).
+For example, blog posts should throw a 404 if the post does not exist. To throw a `404` error, pass the `_throws: true` configuration in the route metadata:
+
+`routes/blog/[post-id]/+page.ts`
+
+```ts
+import { Metadata } from "sveltepress";
+import type { RouteId } from "./$types";
+
+const metadata = new Metadata("/blog/[post-id]" satisfies RouteId, {
+  _throws: true,
+});
+
+export const load = async (event) => {
+  return {
+    metadata: await metadata.load(event),
+  };
+};
+```
 
 ## SvelteKit Entries
 
 SveltePress supports the `entries` page option for prerendering:
 
-`/blog/[post-id]/+page.ts` or `/blog/[post-id]/+page.server.ts`
+`routes/blog/[post-id]/+page.ts` or `/blog/[post-id]/+page.server.ts`
 
 ```ts
 import { pageEntries } from "sveltepress";
@@ -102,11 +139,10 @@ export const entries = pageEntries("/blog/[post-id]");
 
 ## Creating New Pages
 
-For page routes with params, create a new page by navigating to the new desired URL while in admin mode, for example `/blog/2`. In admin mode will this not throw a 404 error, instead it will
-load an editable template with default placeholder content. Saving the page will commit it to SveltePress.
+For page routes with params, create a new page by navigating to the desired URL while in admin mode, for example: `/blog/new-page-slug`. In admin mode will this not throw a `404` error, instead it will
+load an editable template with the default placeholder content. Saving the page will commit it to SveltePress.
 
 ## Page Versioning
 
 On top of being keyed by page route and route params, content is also keyed by version.
-Versions are automatically incremented on save.
-Using the Admin Bar on a page to deploy a new version or rollback to a previous one.
+Versions are automatically incremented on save. Using the Admin Bar on a page to deploy a new version or rollback to a previous one. Pages are created in a draft/unpublished state and only go live once they are published.
