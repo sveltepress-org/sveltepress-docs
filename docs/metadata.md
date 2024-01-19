@@ -9,7 +9,7 @@ such as title, author, published date, etc. These can then be accessed in Svelte
 
 In the univeral loader, define editable metadata with the `Metadata` constructor:
 
-`+page.ts`
+`blog/[slug]/+page.ts`
 
 ```ts
 import { Metadata } from "sveltepress"
@@ -28,7 +28,7 @@ export const load: async (event) => {
 }
 ```
 
-`+page.svelte`
+`blog/[slug]/+page.svelte`
 
 ```svelte
 <script lang="ts">
