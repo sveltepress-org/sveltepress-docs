@@ -13,16 +13,17 @@ In the univeral loader, define editable metadata with the `Metadata` constructor
 
 ```ts
 import { Metadata } from "sveltepress"
+import type { RouteId } from './$types';
 
-const metadata = new Metadata({
+const metadata = new Metadata('/blog/[slug]' satisfies RouteId, {
   title: "Default title",
   tagline: "Default tagline",
   published_at: new Date()
 });
 
-export const load: (event) => {
+export const load: async (event) => {
   return {
-    metadata: metadata.load(event),
+    metadata: await metadata.load(event),
   }
 }
 ```
