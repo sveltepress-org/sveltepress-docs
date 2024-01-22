@@ -77,7 +77,9 @@ Create or edit `routes/+layout.ts` to initiate the PocketBase client:
 import { SveltePress } from "sveltepress";
 
 export const load = async (event) => {
-  const pb = new SveltePress();
+  const pb = new SveltePress({
+    fetch: event.fetch,
+  });
 
   return {
     pb,

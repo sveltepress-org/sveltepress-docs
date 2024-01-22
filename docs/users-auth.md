@@ -25,7 +25,9 @@ In the universal context, the user is passed down from the root layout:
 
 ```ts
 export const load = async (event) => {
-  const pb = new PocketBase("/admin");
+  const pb = new SveltePress({
+    fetch: event.fetch,
+  });
 
   return {
     pb,

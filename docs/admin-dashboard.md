@@ -31,10 +31,12 @@ If the path is changed from the default `/admin`, also update the PocketBase cli
 `routes/+layout.ts`
 
 ```ts
-import { PocketBase } from "sveltepress";
+import { SveltePress } from "sveltepress";
 
 export const load = async (event) => {
-  const pb = new PocketBase("/admin");
+  const pb = new SveltePress({
+    fetch: event.fetch,
+  });
 
   return {
     pb,

@@ -59,7 +59,9 @@ The taxonomy can be loaded in the root layout and made available to any page bel
 import { SveltePress } from "sveltepress";
 
 export const load = async (event) => {
-  const pb = new SveltePress();
+  const pb = new SveltePress({
+    fetch: event.fetch,
+  });
 
   const { contents, metadata } = await pb.contents.load(event);
 

@@ -74,7 +74,9 @@ SveltePress for each page during navigation. In SvelteKit terms, it's added as a
 import { SveltePress } from "sveltepress";
 
 export const load = async (event) => {
-  const pb = new SveltePress();
+  const pb = new SveltePress({
+    fetch: event.fetch,
+  });
 
   const { contents, metadata } = await pb.contents.load(event);
 
