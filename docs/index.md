@@ -57,7 +57,7 @@ npm install sveltepress
 yarn add sveltepress
 ```
 
-Create or edit `hooks.server.ts` and add the SveltePress middleware to the handler. This wraps the default handler `({ event, resolve }) => resolve(event)`
+Create or edit `hooks.server.ts` and add the SveltePress middleware to the handler. This wraps the default handler (which can be omitted but left in this example for clarity):
 
 `hooks.server.ts`
 
