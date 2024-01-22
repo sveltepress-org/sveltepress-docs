@@ -74,10 +74,10 @@ Create or edit `routes/+layout.ts` to initiate the PocketBase client:
 `routes/+layout.ts`
 
 ```ts
-import { PocketBase } from "sveltepress";
+import { SveltePress } from "sveltepress";
 
 export const load = async (event) => {
-  const pb = new PocketBase();
+  const pb = new SveltePress();
 
   return {
     pb,
@@ -105,13 +105,13 @@ If using TypeScript, update `app.d.ts` with the server locals:
 `app.d.ts`
 
 ```ts
-import { PocketBase } from "sveltepress";
+import { SveltePress } from "sveltepress";
 
 declare global {
   namespace App {
     interface Locals {
-      admin: PocketBase;
-      pb: PocketBase;
+      admin: SveltePress;
+      pb: SveltePress;
     }
   }
 }
