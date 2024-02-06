@@ -48,6 +48,15 @@ In admin mode, this provides a dropdown in the [Admin Bar](/admin-dashboard#admi
 The metadata properties are coalesced the same way SvelteKit does with loader data from higher level
 layouts. Properties defined in higher level layouts are available in lower levels or can be overwritten.
 
+## Data Types
+
+Data types for the metadata are automatically inferred from the placeholder values, so be sure to use
+real placeholders rather than `null` or `undefined`. The supported types are:
+
+```ts
+type SupportedTypes = string | string[] | Date | number | boolean;
+```
+
 ## Taxonomy
 
 A few metadata keys are preconfigured to be parsed as taxonomy: `categories`, `tags` and `author`.
