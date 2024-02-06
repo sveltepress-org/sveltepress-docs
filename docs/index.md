@@ -69,7 +69,7 @@ export const handle = SveltePressMiddleware(({ event, resolve }) =>
 );
 ```
 
-Create or edit `routes/+layout.ts` to initiate the PocketBase client:
+Create or edit `routes/+layout.ts` to initiate the SveltePress client:
 
 `routes/+layout.ts`
 

@@ -2,7 +2,7 @@
 sidebar_position: 3
 ---
 
-# Loading Content
+# Content
 
 SveltePress comes with content management tools out of the box. Routes in SvelteKit
 load content from SveltePress in the universal (server or client) load function.
@@ -30,8 +30,7 @@ used for saving and loading content from SveltePress. The `key` must be unique w
 </h1>
 
 <RichText key="main-page-content">Default placeholder content</RichText>
-
-<Markdown key="main-post">Default placeholder post</Markdown>
+<Markdown key="main-post" placeholder="# Markdown placeholder" />
 
 <p>This text is static and not editable.</p>
 ```
@@ -54,11 +53,25 @@ for saving and loading the content. All editable props are passed in with defaul
 </EditableComponent>
 ```
 
+## Image
+
+SveltePress has built-in support for images, allowing images to be picked or uploaded from the image browser.
+
+`+page.svelte`
+
+```svelte
+<script>
+  import { Image } from "sveltepress";
+</script>
+
+<Image key="featured-image" placeholder="/images/placeholder.png" />
+```
+
 ## Custom Editors
 
 Editors are vanilla Svelte components with two modes, display mode and edit mode. In display mode,
 the component is completely replaced by the content it's rendering. In edit mode, the editor
-displays the current content and submits it on page save.
+allows the content to be edited and stores it until the page is saved.
 
 SveltePress can be extended with custom editors. Any component that implements
 the editor interface can be used. Read more on [how to build custom editors](/docs/custom-editors).
@@ -88,7 +101,7 @@ export const load = async (event) => {
 };
 ```
 
-Content in SveltePress is keyed by the page route, the route params, page version (see [below](#page-versioning)) and optionally by language code (see [i18n support](/docs/i18n)). For example, a blog post would be stored and retrieved from:
+Content in SveltePress is keyed by the page route, the route params, page version (see [below](#page-versioning)) and optionally by language code (see [multilingual support](/docs/multilingual)). For example, a blog post would be stored and retrieved from:
 
 `/blog/[post-id] : post-id=1 : v1`
 
@@ -108,7 +121,7 @@ available in the page's data prop under the `contents` key, if you need to acces
 ## 404 Errors
 
 SveltePress can be configured to throw a `404` error for pages with route params if there's no content saved in the database (except in Admin Mode for creating new pages, see [below](#creating-new-pages)).
-For example, blog posts should throw a 404 if the post does not exist. To throw a `404` error, pass the `_throws: true` configuration in the route metadata:
+For example, blog posts should throw a 404 if the post does not exist. To throw a `404` error, pass the `throws404: true` configuration in the route metadata:
 
 `routes/blog/[post-id]/+page.ts`
 
@@ -117,7 +130,7 @@ import { Metadata } from "sveltepress";
 import type { RouteId } from "./$types";
 
 const metadata = new Metadata("/blog/[post-id]" satisfies RouteId, {
-  _throws: true,
+  throws404: true,
 });
 
 export const load = async (event) => {
